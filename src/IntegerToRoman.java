@@ -1,47 +1,92 @@
 /**
  * Created by liberty on 2017/7/16.
  */
+
+/**
+ * https://leetcode-cn.com/problems/integer-to-roman/
+ *
+ */
 public class IntegerToRoman {
     public String intToRoman(int num) {
-        if (num<1||num>3999){
+        if (num < 1 || num > 3999) {
             return "";
         }
-        StringBuilder builder=new StringBuilder();
-        String numStr=Integer.toString(num);
-        char[] chars=numStr.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            char c=chars[i];
-            int level=chars.length-i;
-            int n=(c-48)*level;
-            int n1=c-48;
-            switch (level){
-                case 4:
-                    for (int j=0;j<n1;i++){
-                        builder.append("M");
+        int level = 1000;
+        int bit = 4;
+        int n = num;
+        StringBuilder sb = new StringBuilder();
+        while (n > 0) {
+            int n2 = n / level;
+            if (n2 > 0) {
+                if (n2 < 5) {
+                    if (n2 == 4) {
+                        if (bit == 3) {
+                            sb.append("CD");
+                        } else if (bit == 2) {
+                            sb.append("XL");
+                        } else if (bit == 1) {
+                            sb.append("IV");
+                        }
+                    } else {
+                        int i = n2;
+                        while (i > 0) {
+                            if (bit == 4) {
+                                sb.append("M");
+                            } else if (bit == 3) {
+                                sb.append("C");
+                            } else if (bit == 2) {
+                                sb.append("X");
+                            } else if (bit == 1) {
+                                sb.append("I");
+                            }
+                            i--;
+                        }
                     }
-                    break;
-                case 3:
-                    if (n1<5){
-                        int n2=5-n1;
-                        for ()
-                    }else if (n1>5){
-
-                    }else {
-                        builder.append("D");
+                } else if (n2 == 5) {
+                    if (bit == 3) {
+                        sb.append("D");
+                    } else if (bit == 2) {
+                        sb.append("L");
+                    } else if (bit == 1) {
+                        sb.append("V");
                     }
-                    break;
-                case 2:
-
-                    break;
-                case 1:
-
-                    break;
+                } else if (n2 == 9) {
+                    if (bit == 3) {
+                        sb.append("CM");
+                    } else if (bit == 2) {
+                        sb.append("XC");
+                    } else if (bit == 1) {
+                        sb.append("IX");
+                    }
+                } else {
+                    int i = n2-5;
+                    if (bit == 3) {
+                        sb.append("D");
+                    } else if (bit == 2) {
+                        sb.append("L");
+                    } else if (bit == 1) {
+                        sb.append("V");
+                    }
+                    while (i > 0) {
+                        if (bit == 3) {
+                            sb.append("C");
+                        } else if (bit == 2) {
+                            sb.append("X");
+                        } else if (bit == 1) {
+                            sb.append("I");
+                        }
+                        i--;
+                    }
+                }
             }
+            n = n % level;
+            level /= 10;
+            bit--;
         }
-
+        return sb.toString();
     }
 
     public static void main(String[] args) {
-
+        System.out.println(new IntegerToRoman().intToRoman(58));
     }
 }
